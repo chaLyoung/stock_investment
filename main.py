@@ -24,9 +24,6 @@ class StockStart(QWidget):
     def start(self):
         global getCodeListBtn
 
-    def start(self):
-        global getCodeListBtn
-
         self.setWindowTitle('Kiwoom Stock Investment')
         self.setFixedSize(400, 250)
         self.setFocusPolicy(Qt.StrongFocus)
@@ -53,6 +50,27 @@ class StockStart(QWidget):
 
         if err_code == 0:
             getCodeListBtn.clicked.connect(self.getCodeList)
+
+    def getCodeList(self):
+        ret = self.kiwoom.dynamicCall("GetCodeListByMarket(QString)", ["0"])
+
+        kospiNameList = []
+        kospiCodeList = ret.split(';')
+
+        for i in range(kospiCodeList):
+            self.kiwoom.dynamicCall("SetInputValue(QString, QString)", "종목코드", kospiCodeList[i])
+            self.kiwoom.dynamicCall("CommRqData(QString, QString, int, QString)", "opt10001_req", "opt10001", 0,"0101")
+            time.sleep(0.2)
+
+    def receive_trdata(self, screen_no, rqname, trcode, recordname, prev_next, data_len, err_code, msg1, msg2):
+        global codeNameList
+        global perList
+
+        if rqname == 'opt10001_req':
+            name = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname, 0, "종목명")
+            per = self.kiwoom.dynamicCall("CommGetData(QString, QString, QString, int, QString)", trcode, "", rqname, 0, "PER")
+
+            print(name.strip())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
