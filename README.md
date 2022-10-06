@@ -3,6 +3,8 @@
 ####
 
 ####
+    대신 API 코드
+
     현재가 : # 4
     총상장주식수 :  20
     PER :  67
@@ -12,7 +14,7 @@
     부채비율: 75
     자기자본이익률(ROE): 77
 ####
-    ROA 구하기
+    ROA 계산
     주당순자산BPS(89) * 총상장주식수(20) = 순자산
     (유동 + 비유동부채) / 순자산 * 100 = 부채비율
     부채비율(75) * 순자산 / 100  = 부채
@@ -34,5 +36,5 @@
     
 
     파일빌드
-    pyinstaller --onefile --exclude pandas -n stock_investment.exe daishin_roe.py --hidden-import=numpy.core.multiarray
+    pyinstaller --onefile --exclude pandas -n stock_investment.exe daishin.py --hidden-import=numpy.core.multiarray
 ####
